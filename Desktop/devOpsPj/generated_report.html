@@ -1,0 +1,105 @@
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Financial Report - Israel</title>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+            
+            body { 
+                font-family: 'Inter', sans-serif; 
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                min-height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin: 0;
+                padding: 20px;
+                color: #333;
+            }
+            .card { 
+                background: rgba(255, 255, 255, 0.95); 
+                padding: 40px; 
+                border-radius: 16px; 
+                box-shadow: 0 10px 25px rgba(0,0,0,0.2); 
+                max-width: 500px; 
+                width: 100%;
+                backdrop-filter: blur(10px);
+            }
+            h1 { 
+                color: #1f2937; 
+                margin-top: 0; 
+                font-size: 24px;
+                border-bottom: 2px solid #e5e7eb;
+                padding-bottom: 15px;
+                margin-bottom: 25px;
+            }
+            .stat-row { 
+                display: flex; 
+                justify-content: space-between; 
+                margin-bottom: 15px; 
+                font-size: 16px;
+            }
+            .label { color: #6b7280; font-weight: 600; }
+            .value { font-weight: 600; color: #111827; }
+            hr { border: 0; border-top: 1px solid #e5e7eb; margin: 20px 0; }
+            .savings-section {
+                background-color: #ecfdf5;
+                padding: 15px;
+                border-radius: 8px;
+                border-left: 5px solid #10b981;
+            }
+            .savings-section .label { color: #065f46; }
+            .savings-section .value { color: #059669; font-size: 1.1em; }
+            .footer {
+                margin-top: 25px;
+                text-align: center;
+                font-size: 12px;
+                color: #9ca3af;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="card">
+            <h1>Financial Report</h1>
+            
+            <div class="stat-row">
+                <span class="label">Name:</span>
+                <span class="value">Israel</span>
+            </div>
+            <div class="stat-row">
+                <span class="label">Date:</span>
+                <span class="value">2025-01-11</span>
+            </div>
+            
+            <div class="stat-row">
+                <span class="label">Income:</span>
+                <span class="value">$20,000.00</span>
+            </div>
+            <div class="stat-row">
+                <span class="label">Expenses:</span>
+                <span class="value">$12,000.00</span>
+            </div>
+            
+            <hr>
+            
+            <div class="savings-section">
+                <div class="stat-row">
+                    <span class="label">Monthly Savings:</span>
+                    <span class="value success">$8,000.00</span>
+                </div>
+                 <div class="stat-row" style="margin-bottom: 0;">
+                    <span class="label">Savings Percentage:</span>
+                    <span class="value success">40.0%</span>
+                </div>
+            </div>
+            
+            <div class="footer">
+                Generated automatically via DevOps Pipeline
+            </div>
+        </div>
+    </body>
+    </html>
+    
