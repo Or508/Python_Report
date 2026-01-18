@@ -173,6 +173,21 @@ def create_html_file(user_messages, ai_responses, validation_errors, cta_left,
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat Session Execution Report</title>
     <style>
+        @keyframes fadeIn {{
+            from {{ opacity: 0; transform: translateY(20px); }}
+            to {{ opacity: 1; transform: translateY(0); }}
+        }}
+
+        @keyframes slideUp {{
+            from {{ opacity: 0; transform: translateY(40px); }}
+            to {{ opacity: 1; transform: translateY(0); }}
+        }}
+
+        @keyframes shine {{
+            0% {{ background-position: -200% center; }}
+            100% {{ background-position: 200% center; }}
+        }}
+
         * {{
             margin: 0;
             padding: 0;
@@ -180,284 +195,315 @@ def create_html_file(user_messages, ai_responses, validation_errors, cta_left,
         }}
         
         body {{
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background-color: #1e1e2d;
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #0f0f1a;
             color: #e0e0e0;
             line-height: 1.6;
             padding: 2rem;
             min-height: 100vh;
             margin: 0;
+            overflow-x: hidden;
         }}
         
         .container {{
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 0 auto;
+            animation: fadeIn 0.8s ease-out forwards;
+        }}
+        
+        .status-banner {{
+            background: linear-gradient(90deg, #2ecc71, #27ae60);
+            color: #ffffff;
+            padding: 0.8rem 2rem;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.2);
+            display: inline-block;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
         }}
         
         .header {{
             text-align: center;
-            margin-bottom: 3rem;
-            padding-bottom: 2rem;
-            border-bottom: 2px solid #333;
+            margin-bottom: 4rem;
+            padding: 3rem;
+            background: linear-gradient(135deg, #6b21a8, #4c1d95, #7e22ce);
+            background-size: 200% auto;
+            border-radius: 24px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
         }}
-        
-        .status-banner {{
-            background-color: #2ecc71;
-            color: #ffffff;
-            padding: 1rem 2rem;
-            text-align: center;
-            font-weight: 600;
-            font-size: 1.1rem;
-            margin-bottom: 2rem;
-            border-radius: 8px;
+
+        .header::before {{
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(
+                to right,
+                transparent,
+                rgba(255, 255, 255, 0.1),
+                transparent
+            );
+            transform: skewX(-25deg);
+            animation: shine 4s infinite;
         }}
         
         .header h1 {{
-            font-size: 2.5rem;
-            font-weight: 700;
+            font-size: 3rem;
+            font-weight: 800;
             color: #ffffff;
             margin-bottom: 1rem;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            letter-spacing: -1px;
         }}
         
         .header p {{
-            color: #b0b0b0;
-            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+            font-weight: 500;
         }}
         
         .kpi-grid {{
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 3rem;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
         }}
         
         .kpi-card {{
-            background-color: #2a2a3a;
-            border-radius: 12px;
-            padding: 2rem;
-            border: 1px solid #3a3a4a;
-            transition: border-color 0.2s ease;
+            background: rgba(42, 42, 58, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: slideUp 0.6s ease-out both;
         }}
+
+        .kpi-card:nth-child(1) {{ animation-delay: 0.2s; }}
+        .kpi-card:nth-child(2) {{ animation-delay: 0.3s; }}
+        .kpi-card:nth-child(3) {{ animation-delay: 0.4s; }}
         
         .kpi-card:hover {{
-            border-color: #4a4a5a;
+            transform: translateY(-10px) scale(1.02);
+            border-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            background: rgba(42, 42, 58, 0.8);
         }}
         
-        .kpi-card.success {{
-            border-left: 4px solid #2ecc71;
+        .kpi-card.user-messages {{
+            border-top: 5px solid #3b82f6;
         }}
         
-        .kpi-card.warning {{
-            border-left: 4px solid #f39c12;
+        .kpi-card.ai-responses {{
+            border-top: 5px solid #a855f7;
         }}
         
-        .kpi-card.error {{
-            border-left: 4px solid #e74c3c;
+        .kpi-card.validation-errors {{
+            border-top: 5px solid #f97316;
         }}
         
         .kpi-card h3 {{
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: #b0b0b0;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #94a3b8;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 0.5rem;
+            letter-spacing: 2px;
+            margin-bottom: 1.5rem;
         }}
         
         .kpi-card .value {{
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #ffffff;
+            font-size: 3.5rem;
+            font-weight: 800;
             margin-bottom: 0.5rem;
+            background: linear-gradient(to bottom, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }}
         
-        .kpi-card.success .value {{
-            color: #2ecc71;
+        .kpi-card.user-messages .value {{
+            background: linear-gradient(135deg, #60a5fa, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }}
         
-        .kpi-card.warning .value {{
-            color: #f39c12;
+        .kpi-card.ai-responses .value {{
+            background: linear-gradient(135deg, #c084fc, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }}
         
-        .kpi-card.error .value {{
-            color: #e74c3c;
+        .kpi-card.validation-errors .value {{
+            background: linear-gradient(135deg, #fb923c, #f97316);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }}
         
         .kpi-card .description {{
-            color: #b0b0b0;
-            font-size: 0.85rem;
-            margin-top: 0.5rem;
+            color: #64748b;
+            font-size: 0.9rem;
+            font-weight: 500;
         }}
         
         .details-section {{
-            background-color: #2a2a3a;
-            border-radius: 12px;
-            padding: 2rem;
-            margin-bottom: 3rem;
-            border: 1px solid #3a3a4a;
+            background: rgba(42, 42, 58, 0.3);
+            border-radius: 24px;
+            padding: 3rem;
+            margin-bottom: 4rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }}
         
         .details-section h2 {{
-            font-size: 1.5rem;
-            font-weight: 600;
+            font-size: 1.8rem;
+            font-weight: 700;
             color: #ffffff;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }}
         
         .details-table {{
             width: 100%;
-            border-collapse: collapse;
-            border-radius: 12px;
-            overflow: hidden;
+            border-collapse: separate;
+            border-spacing: 0;
         }}
         
         .details-table th {{
-            background-color: #2a2a2a;
-            color: #ffffff;
+            color: #94a3b8;
             font-weight: 600;
-            padding: 1rem 1.5rem;
+            padding: 1.2rem 1.5rem;
             text-align: left;
-            border-bottom: 2px solid #333;
-            font-size: 0.95rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.8rem;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
         }}
         
         .details-table td {{
-            padding: 1rem 1.5rem;
-            border-bottom: 1px solid #2a2a2a;
-            color: #e0e0e0;
-            transition: background-color 0.2s ease;
+            padding: 1.2rem 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: #cbd5e1;
+            font-size: 1rem;
         }}
         
-        .details-table tbody tr:hover {{
-            background-color: #2a2a2a;
-        }}
-        
-        .details-table tbody tr:last-child td {{
-            border-bottom: none;
+        .details-table tbody tr:hover td {{
+            background-color: rgba(255, 255, 255, 0.02);
+            color: #fff;
         }}
         
         .status-badge {{
             display: inline-block;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 0.9rem;
+            padding: 0.4rem 1.2rem;
+            border-radius: 100px;
+            font-weight: 700;
+            font-size: 0.85rem;
             background-color: {status_color};
             color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            text-transform: uppercase;
         }}
         
         .jenkins-banner {{
-            background-color: #2a2a3a;
-            border-radius: 12px;
-            padding: 1.5rem 2rem;
-            margin-top: 3rem;
-            border: 1px solid #3a3a4a;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-        }}
-        
-        .jenkins-banner p {{
-            color: #e0e0e0;
+            text-align: center;
+            padding: 2rem;
+            color: #475569;
+            font-size: 0.9rem;
             font-weight: 500;
-            font-size: 1rem;
-            margin: 0;
         }}
         
         @media (max-width: 768px) {{
-            body {{
-                padding: 1rem;
-            }}
-            
-            .header h1 {{
-                font-size: 2rem;
-            }}
-            
-            .kpi-grid {{
-                grid-template-columns: 1fr;
-            }}
-            
+            body {{ padding: 1rem; }}
+            .header {{ padding: 2rem; }}
+            .header h1 {{ font-size: 2rem; }}
+            .kpi-grid {{ grid-template-columns: 1fr; }}
+            .details-section {{ padding: 1.5rem; }}
         }}
     </style>
 </head>
 <body>
     <div class="container">
         <div class="status-banner">
-            Build Successful - Verified by Jenkins Agent
+            ✓ Build Verified by Jenkins
         </div>
         
         <div class="header">
-            <h1>Chat Session Execution Report</h1>
-    <p>Generated: {timestamp}</p>
+            <h1>Chat Analytics</h1>
+            <p>Report Generated: {timestamp}</p>
         </div>
         
         <div class="kpi-grid">
-            <div class="kpi-card success">
+            <div class="kpi-card user-messages">
                 <h3>User Messages</h3>
                 <div class="value">{user_messages}</div>
-                <p class="description">Total messages sent by user</p>
+                <p class="description">Active engagement metrics</p>
             </div>
             
-            <div class="kpi-card success">
+            <div class="kpi-card ai-responses">
                 <h3>AI Responses</h3>
                 <div class="value">{ai_responses}</div>
-                <p class="description">Total AI responses generated</p>
+                <p class="description">Automated intelligence flow</p>
             </div>
             
-            <div class="kpi-card error">
+            <div class="kpi-card validation-errors">
                 <h3>Validation Errors</h3>
                 <div class="value">{validation_errors}</div>
-                <p class="description">Errors during validation</p>
+                <p class="description">System integrity checks</p>
             </div>
         </div>
         
         <div class="details-section">
-            <h2>Session Details</h2>
+            <h2>Session Intelligence</h2>
             <table class="details-table">
                 <thead>
-        <tr>
-            <th>Parameter</th>
-            <th>Value</th>
-        </tr>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Analysis</th>
+                    </tr>
                 </thead>
                 <tbody>
-        <tr>
-                        <td><strong>User Messages</strong></td>
-            <td>{user_messages}</td>
-        </tr>
-        <tr>
-                        <td><strong>AI Responses</strong></td>
-            <td>{ai_responses}</td>
-        </tr>
-        <tr>
-                        <td><strong>Validation Errors</strong></td>
-            <td>{validation_errors}</td>
-        </tr>
-        <tr>
-                        <td><strong>CTA Left</strong></td>
-                        <td>{'Yes' if cta_left else 'No'}</td>
-        </tr>
-        <tr>
-                        <td><strong>Session Time</strong></td>
-                        <td>{session_time} minutes</td>
-        </tr>
-        <tr>
-                        <td><strong>Error Rate</strong></td>
-            <td>{error_rate:.2%}</td>
-        </tr>
-        <tr>
-            <td><strong>Status</strong></td>
+                    <tr>
+                        <td><strong>Total Conversations</strong></td>
+                        <td>{user_messages} manual messages</td>
+                    </tr>
+                    <tr>
+                        <td><strong>AI Participation</strong></td>
+                        <td>{ai_responses} generated replies</td>
+                    </tr>
+                    <tr>
+                        <td><strong>System Validation</strong></td>
+                        <td>{validation_errors} exceptions caught</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Call to Action</strong></td>
+                        <td>{'Completed' if not cta_left else 'Pending Action'}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Interaction Time</strong></td>
+                        <td>{session_time} minutes active</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Performance Ratio</strong></td>
+                        <td>{error_rate:.2%} error rate</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Final Health Score</strong></td>
                         <td><span class="status-badge">{status}</span></td>
-        </tr>
+                    </tr>
                 </tbody>
-    </table>
+            </table>
         </div>
     
         <div class="jenkins-banner">
-            <p>✓ Build Verified by Jenkins Agent</p>
+            Securely processed on Jenkins Build Node
         </div>
     </div>
 </body>
